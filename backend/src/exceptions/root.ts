@@ -4,12 +4,7 @@ export class HttpException extends Error {
   statusCode: number;
   errors: unknown;
 
-  constructor(
-    message: string,
-    errorCode: ErrorCode,
-    statusCode: number,
-    errors: unknown
-  ) {
+  constructor(message: string, errorCode: ErrorCode, statusCode: number, errors: unknown) {
     super(message); // Sets the 'message' property of Error
     this.errorCode = errorCode;
     this.statusCode = statusCode;
@@ -24,4 +19,5 @@ export enum ErrorCode {
   INCORRECT_PASSWORD = 1003,
   UNPROCESSABLE_ENTITY = 2001,
   INTERNAL_EXCEPTION = 3001,
+  UNAUTHORIZED_EXCEPTION = 4001,
 }
