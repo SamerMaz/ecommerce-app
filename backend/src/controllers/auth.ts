@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Response, Request } from 'express';
 import prismaClient from '../config/prisma';
 import { hashSync, compareSync } from 'bcrypt';
@@ -51,4 +50,10 @@ export const login = async (req: Request, res: Response) => {
   );
 
   res.status(200).json({ user, token });
+};
+
+//me
+
+export const me = async (req: Request, res: Response) => {
+  res.json(req.user);
 };

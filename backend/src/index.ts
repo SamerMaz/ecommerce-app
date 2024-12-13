@@ -13,5 +13,5 @@ app.use('/api', rootRouter);
 app.use(errorMiddleware);
 
 app.listen(PORT, () => {
-  console.log('App is Working');
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
