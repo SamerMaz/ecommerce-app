@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { UnauthorizedException } from '../exceptions/unauthorized';
 import { ErrorCode } from '../exceptions/root';
-import * as jwt from 'jsonwebtoken';
-import { config } from '../config/env';
+
 import prismaClient from '../config/prisma';
 import { User } from '@prisma/client';
+import { extractToken, verifyToken } from '../utils/token-utils';
 
 declare module 'express' {
   interface Request {
@@ -13,18 +13,10 @@ declare module 'express' {
 }
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  //1. extract the token from header
-  const token = req.headers.authorization;
-
-  //2. if token is not present, throw an error of unauthorized
-  if (!token) {
-    next(new UnauthorizedException('Unauthorized', ErrorCode.UNAUTHORIZED_EXCEPTION));
-    return;
-  }
-
   try {
-    //3. if the token is present, verify that token and extract the payload
-    const payload = jwt.verify(token, config.JWT_SECRET_KEY) as { userId: number };
+    // Step 1: Extract and verify the token
+    const token = extractToken(req.headers.authorization);
+    const payload = verifyToken(token);
 
     //4. to get the user from the payload
     const user = await prismaClient.user.findFirst({
