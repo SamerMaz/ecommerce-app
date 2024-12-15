@@ -14,18 +14,18 @@ declare module 'express' {
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    // Step 1: Extract and verify the token
+    // Extract and verify the token
     const token = extractToken(req.headers.authorization);
     const payload = verifyToken(token);
 
-    //4. to get the user from the payload
+    // get the user from the payload
     const user = await prismaClient.user.findFirst({
       where: { id: payload.userId },
     });
     if (!user) {
       next(new UnauthorizedException('Unauthorized', ErrorCode.UNAUTHORIZED_EXCEPTION));
     }
-    //5. to attach the user to the current request object
+    //5. attach the user to the current request object
     req.user = user;
     next();
   } catch (error) {

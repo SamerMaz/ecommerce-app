@@ -22,9 +22,9 @@ export const extractToken = (authorizationHeader: string | undefined): string =>
 /**
  * Verify the token and return its payload.
  */
-export const verifyToken = (token: string): { userId: number } => {
+export const verifyToken = (token: string): { userId: string } => {
   try {
-    const payload = jwt.verify(token, config.JWT_SECRET_KEY) as { userId: number };
+    const payload = jwt.verify(token, config.JWT_SECRET_KEY) as { userId: string };
     if (!payload.userId) {
       throw new UnauthorizedException('Invalid token payload', ErrorCode.UNAUTHORIZED_EXCEPTION);
     }
