@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { UnauthorizedException } from '../exceptions/unauthorized';
 import { ErrorCode } from '../exceptions/root';
 
-import prismaClient from '../config/prisma';
+import db from '../config/prisma';
 import { User } from '@prisma/client';
 import { extractToken, verifyToken } from '../utils/token-utils';
 
@@ -19,7 +19,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     const payload = verifyToken(token);
 
     // get the user from the payload
-    const user = await prismaClient.user.findFirst({
+    const user = await db.user.findFirst({
       where: { id: payload.userId },
     });
     if (!user) {

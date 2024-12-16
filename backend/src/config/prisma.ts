@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 // import { SignUpSchema } from '../schema/users';
 
-const prismaClient = new PrismaClient({
+const db = new PrismaClient({
   log: ['query'], // Logs all queries to the console
 });
 
@@ -16,4 +16,4 @@ const prismaClient = new PrismaClient({
 //   },
 // });
 
-export default prismaClient;
+export default db;
