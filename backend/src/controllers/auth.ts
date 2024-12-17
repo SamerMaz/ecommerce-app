@@ -64,7 +64,7 @@ export const login = async (req: Request, res: Response) => {
 
   res.cookie('refreshToken', rawRefreshToken, {
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000, //7days
   });
@@ -129,7 +129,7 @@ export const logout = async (req: Request, res: Response) => {
   });
 
   // clear the cookie
-  res.clearCookie('refreshToken', { httpOnly: true, secure: true, sameSite: 'strict' });
+  res.clearCookie('refreshToken', { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'strict' });
 
   res.status(200).json({ message: 'Logged out successfully' });
 };
