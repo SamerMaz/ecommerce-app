@@ -72,7 +72,7 @@ export const login = async (req: Request, res: Response) => {
   // Send tokens to the client
   res.status(200).json({
     user,
-    token: `Bearer ${accessToken}`,
+    token: `${accessToken}`,
   });
 
   // res.status(200).json({ user, token: `Bearer ${accessToken}` });
@@ -112,7 +112,7 @@ export const refreshToken = async (req: Request, res: Response) => {
   // Generate a new access token
   const newAccessToken = jwt.sign({ userId: validToken.userId }, config.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-  res.status(200).json({ token: `Bearer ${newAccessToken}` });
+  res.status(200).json({ token: `${newAccessToken}` });
 };
 
 export const logout = async (req: Request, res: Response) => {

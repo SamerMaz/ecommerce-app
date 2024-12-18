@@ -41,3 +41,15 @@ model RefreshToken {
   updatedAt   DateTime @updatedAt
   expireAt    DateTime
 }
+
+model Product {
+  id String @id @default(uuid())
+  name String
+  description String
+  price Decimal
+  tags String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
+}
