@@ -44,7 +44,7 @@ model RefreshToken {
 
 model Product {
   id String @id @default(uuid())
-  name String
+  name String  @unique
   description String
   price Decimal
   tags String[]

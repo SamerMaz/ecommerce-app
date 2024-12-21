@@ -2,14 +2,20 @@ import { Request, Response } from 'express';
 import db from '../config/prisma';
 import { NotFoundException } from '../exceptions/not-found';
 import { ErrorCode } from '../exceptions/root';
+import { BadRequestsException } from '../exceptions/bad-requests';
 
 export const createProduct = async (req: Request, res: Response) => {
-  const product = await db.product.create({
-    data: {
-      ...req.body,
-    },
-  });
-  res.status(201).json(product);
+  try {
+    const product = await db.product.create({
+      data: {
+        ...req.body,
+      },
+    });
+    res.status(201).json(product);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (error: unknown) {
+    throw new BadRequestsException(`Product already exist`, ErrorCode.PRODUCT_ALREADY_EXIST);
+  }
 };
 
 export const updateProduct = async (req: Request, res: Response) => {
