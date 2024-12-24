@@ -3,6 +3,7 @@ import db from '../config/prisma';
 import { NotFoundException } from '../exceptions/not-found';
 import { ErrorCode } from '../exceptions/root';
 import { BadRequestsException } from '../exceptions/bad-requests';
+import { isPrismaError } from '../utils/prismaError';
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -14,7 +15,13 @@ export const createProduct = async (req: Request, res: Response) => {
     res.status(201).json(product);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error: unknown) {
-    throw new BadRequestsException(`Product already exist`, ErrorCode.PRODUCT_ALREADY_EXIST);
+    if (isPrismaError(error))
+      if (error.code === 'P2002') {
+        // Unique constraint violation
+        throw new BadRequestsException(`Product already exist`, ErrorCode.PRODUCT_ALREADY_EXIST);
+      } else {
+        res.status(500).json({ message: 'Something went wrong' });
+      }
   }
 };
 
